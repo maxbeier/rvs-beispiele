@@ -1,0 +1,63 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background:
+  linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+  linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+  linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+  linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+  linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+  linear-gradient(#1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424);
+  background-color: #131313;
+  background-size: 20px 20px;
+
+  color: white;
+  font-size: 20px;
+  font-family: 'Patrick Hand', cursive;
+  line-height: 1.5;
+}
+
+.wrapper {
+  max-width: 40rem;
+  margin: 0 auto;
+  background-color: rgb(154 46 46 / 0.7);
+  padding: 1rem 2rem;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header li {
+  display: inline-block;
+  margin: .5rem 1rem;
+}
+
+header li a {
+  color: white;
+}
+
+
+.contact-form select,
+.contact-form input,
+.contact-form textarea {
+  padding: 8px 8px;
+  display: block;
+  width: 100%;
+  font-size: 22px;
+  border-radius: 4px;
+  border: 0;
+  box-shadow: 0;
+}
+
+.contact-form label {
+  display: block;
+}
+.contact-form label + label {
+  margin-top: 1rem;
+}

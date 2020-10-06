@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Poller</title>
+  <link rel="stylesheet" href="normalize.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header class="header">
+    <div class="wrapper">
+      <h1 class="company">
+        <svg width="1em" height=".7em" viewBox="0 0 16 16" class="bi bi-bar-chart-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <rect width="4" height="5" x="1" y="10" rx="1" />
+          <rect width="4" height="9" x="6" y="6" rx="1" />
+          <rect width="4" height="14" x="11" y="1" rx="1" />
+        </svg>
+        Poller</h1>
+    </div>
+  </header>
+  <div class="wrapper">
+    <h1>Bester Wochentag?</h1>
+
+    <div class="flex">
+      <div class="answer">Montag</div>
+      <div class="flexitem progress-wrapper">
+        <div class="progress-bar" style="width: 20%">20%</div>
+      </div>
+    </div>
+    <div class="flex">
+      <div class="answer">Dienstag</div>
+      <div class="flexitem progress-wrapper">
+        <div class="progress-bar" style="width: 40%">40%</div>
+      </div>
+    </div>
+    <div class="flex">
+      <div class="answer">Mittwoch</div>
+      <div class="flexitem progress-wrapper">
+        <div class="progress-bar" style="width: 60%">60%</div>
+      </div>
+    </div>
+    <div class="flex">
+      <div class="answer">Donnerstag</div>
+      <div class="flexitem progress-wrapper">
+        <div class="progress-bar" style="width: 80%">80%</div>
+      </div>
+    </div>
+    <div class="flex">
+      <div class="answer">Freitag</div>
+      <div class="flexitem progress-wrapper">
+        <div class="progress-bar" style="width: 60%">60%</div>
+      </div>
+    </div>
+    <div class="flex">
+      <div class="answer">Samstag</div>
+      <div class="flexitem progress-wrapper">
+        <div class="progress-bar" style="width: 40%">40%</div>
+      </div>
+    </div>
+    <div class="flex">
+      <div class="answer">Sonntag</div>
+      <div class="flexitem progress-wrapper">
+        <div class="progress-bar" style="width: 20%">20%</div>
+      </div>
+    </div>
+
+    <form class="poll-form" action="download.html">
+      <button type="submit" name="download">Ergebnisse als CSV herunterladen</button>
+    </form>
+  </div>
+</body>
+
+</html>
