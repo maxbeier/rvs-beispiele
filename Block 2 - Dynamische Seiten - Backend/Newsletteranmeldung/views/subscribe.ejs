@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Newsletteranmeldung</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+</head>
+
+<body>
+  <div class="container" style="margin: 2rem">
+    <div class="row">
+      <div class="main">
+        <div class="panel panel-primary">
+          <div class="panel-heading">
+            <h3 class="panel-title">Auf dem Laufenden bleiben</h3>
+          </div>
+          <div class="panel-body">
+            <form role="form" action="/" method="POST">
+              <div>
+                <label class="control-label">Bitte gib deinen Namen an.</label>
+                <input type="text" class="form-control" name="username" placeholder="Name">
+              </div>
+              <div>
+                <label class="control-label">Bitte gib deine E-Mail-Adresse an.</label>
+                <input type="email" class="form-control" name="email" placeholder="E-Mail-Adresse">
+              </div>
+              <button type="submit" class="btn btn-primary pull-right">Jetzt Einschreiben</button>
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox" name="createAccount"> Zugansdaten zusenden
+                </label>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
