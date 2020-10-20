@@ -6,6 +6,12 @@ app.set('views', 'views'); // … und liegen im ordner "views"
 
 /*
   HIER CODE EINFÜGEN
+
+  - route definieren
+  - werte entegegen nehmen
+  - werte verrechnen
+  - template rendern
+
  */
 
 app.listen(3000, () => {
