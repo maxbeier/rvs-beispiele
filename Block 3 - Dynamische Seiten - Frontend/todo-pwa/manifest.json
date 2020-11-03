@@ -1,0 +1,14 @@
+{
+  "name": "Todo para todos",
+  "short_name": "TODO",
+  "theme_color": "#31af91",
+  "background_color": "#31af91",
+  "icons": [{
+    "src": "icon.png",
+    "sizes": "512x512",
+    "type": "image/png"
+  }],
+  "start_url": "index.html",
+  "display": "standalone",
+  "orientation": "landscape"
+}
