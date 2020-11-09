@@ -1,3 +1,10 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kennzeichen</title>
+</head>
 <body>
   <div id="root"></div>
   <script src="https://unpkg.com/react@17.0.1/umd/react.development.js"></script>
@@ -10,10 +17,29 @@
     const data = window.kennzeichen;
     const keys = Object.keys(data);
 
-    function App() {
-      // TODO
+    function KennzeichenSuche() {
+      const [query, setQuery] = React.useState('');
+      const onChange = event => setQuery(event.target.value.toLowerCase());
+
+      const resultKeys = keys.filter(key =>
+        key.toLowerCase().startsWith(query) ||
+        data[key].toLowerCase().startsWith(query)
+      );
+
+      return (
+        <div>
+          <h1>Kennzeichen</h1>
+          <input type="search" value={query} onChange={onChange} />
+          {query &&
+            <ul>
+              {resultKeys.map(key => <li key={key}><strong>{key}</strong> {data[key]}</li>)}
+            </ul>
+          }
+        </div>
+      );
     }
 
-    ReactDOM.render(<App />, document.getElementById('root'))
+    ReactDOM.render(<KennzeichenSuche />, document.getElementById('root'))
   </script>
 </body>
+</html>
