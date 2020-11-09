@@ -1,0 +1,24 @@
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@17.0.1/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.1/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.12.6/babel.js"></script>
+  <script type="text/babel">
+  function IBAN() {
+    const [iban, setIban] = React.useState('');
+
+    const onChange = event => {
+      const value = event.target.value
+        .toUpperCase()
+        .replace(/\s/g, '')
+        .replace(/[^0-9A-Z]/g, '')
+        .match(/.{1,4}/g, '') || [];
+      setIban(value.join(' '));
+    };
+
+    return <input value={iban} onChange={onChange} style={{ width: 300 }} maxLength={42}/>;
+  }
+
+  ReactDOM.render(<IBAN />, document.getElementById('root'));
+  </script>
+</body>

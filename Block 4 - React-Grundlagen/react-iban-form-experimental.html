@@ -1,0 +1,48 @@
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@17.0.1/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.1/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.12.6/babel.js"></script>
+  <script type="text/babel">
+  var i = 0;
+  var values = []
+
+  const useState = (defaultValue) => {
+    const index = i;
+    if (!values[index]) values.push(defaultValue);
+    const setValue = value => {
+      values[index] = value
+      i = 0;
+      ReactDOM.render(<IBAN />, document.getElementById('root'))
+    };
+    const value = values[index];
+    i++
+    return [value, setValue];
+  }
+
+  function IBAN() {
+    const [iban, setIban] = useState('default1');
+    const [iban2, setIban2] = useState(42);
+    const [iban3, setIban3] = useState('default3');
+    console.log('iban', iban, iban2, iban3);
+
+    const onChange = event => {
+      const value = event.target.value
+        .toUpperCase()
+        .replace(/\s/g, '')
+        .replace(/[^0-9A-Z]/g, '')
+        .match(/.{1,4}/g, '') || [];
+      setIban(value.join(' '));
+    };
+
+    return (
+      <div>
+        <input value={iban} onChange={onChange} style={{ width: 300 }} maxLength={42}/>
+        <button onClick={() => setIban2(iban2 + 1)}>hoch {iban2}</button>
+      </div>
+    );
+  }
+
+  ReactDOM.render(<IBAN />, document.getElementById('root'));
+  </script>
+</body>

@@ -1,0 +1,129 @@
+<!--
+<body>
+  <script>
+    const gruss = new Date().getHours() < 11 ? 'Morgen' : 'Tag';
+    const element = document.createElement('div');
+    element.textContent = `Guten ${gruss}`;
+    element.className = 'container';
+    document.body.appendChild(element);
+  </script>
+</body>
+-->
+
+<!--
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@17.0.1/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.1/umd/react-dom.development.js"></script>
+  <script>
+    const gruss = new Date().getHours() < 11 ? 'Morgen' : 'Tag';
+    const element = React.createElement('div', {
+      children: `Guten ${gruss}`,
+      className: 'container',
+    });
+    ReactDOM.render(element, document.getElementById('root'));
+  </script>
+</body>
+ -->
+<!--
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@17.0.1/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.1/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.12.6/babel.js"></script>
+  <script type="text/babel">
+    const PropTypes = {
+      string(props, propName, componentName) {
+        if (typeof props[propName] !== 'string')
+          return new Error(`${propName} needs to be a string. You passed ${typeof props[propName]}`);
+      }
+    }
+
+    function Message({ title, children }) {
+      return <div className="message">
+        <h1>{title}</h1>
+        {children}
+      </div>;
+    }
+    Message.propTypes = {
+      title: PropTypes.string,
+    };
+
+    const element = (
+      <div className="container">
+        <Message title={123}>Guten {new Date().getHours() < 11 ? 'Morgen' : 'Tag'}</Message>
+        <Message title="f0000">Guten Tag</Message>
+      </div>
+    );
+
+    ReactDOM.render(element, document.getElementById('root'));
+  </script>
+</body>
+-->
+
+<!--
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@17.0.1/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.1/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.12.6/babel.js"></script>
+  <script src="https://unpkg.com/prop-types@15.6/prop-types.js"></script>
+  <script type="text/babel">
+    function Message({ title, children }) {
+      return <div className="message">
+        <h1>{title}</h1>
+        {children}
+      </div>;
+    }
+    Message.propTypes = {
+      title: PropTypes.string.isRequired,
+    };
+
+    const element = (
+      <div className="container">
+        <Message title={123}>Guten {new Date().getHours() < 11 ? 'Morgen' : 'Tag'}</Message>
+        <Message>Guten Tag</Message>
+      </div>
+    );
+
+    ReactDOM.render(element, document.getElementById('root'));
+  </script>
+</body>
+-->
+
+<body>
+  <div id="root"></div>
+  <script src="https://unpkg.com/react@17.0.1/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@17.0.1/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.12.6/babel.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" />
+  <style>
+    .message {
+      border: 1px solid black;
+      padding: 1rem;
+    }
+  </style>
+  <script type="text/babel">
+    function Message({ title, children }) {
+      return <div
+        className="card message mt-3 shadow"
+        style={{
+          color: 'hotpink',
+          backgroundColor: 'skyblue'
+        }}
+      >
+        <h1>{title}</h1>
+        {children}
+      </div>;
+    }
+
+    const element = (
+      <div className="container">
+        <Message title={123}>Guten {new Date().getHours() < 11 ? 'Morgen' : 'Tag'}</Message>
+        <Message>Guten Tag</Message>
+      </div>
+    );
+
+    ReactDOM.render(element, document.getElementById('root'));
+  </script>
+</body>
