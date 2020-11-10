@@ -7,26 +7,58 @@ import './App.css';
   3. Persistieren Sie den Spielzustand im LocalStorage, um nicht vollendete Partien später fortsetzen zu können
 */
 
-export default function TicTacToe() {
-  // INFO unsere neun Felder, anfänglich sind alle `null`
-  const [squares, setSquares] = React.useState(Array(9).fill(null));
+function useLocalStorageState(key, initialState) {
+  const [state, setState] = React.useState(
+    () => JSON.parse(window.localStorage.getItem(key)) || initialState,
+  );
 
+  React.useEffect(() => {
+    window.localStorage.setItem(key, JSON.stringify(state));
+  }, [state, key]);
+
+  return [state, setState];
+}
+
+export default function TicTacToe() {
+  const [history, setHistory] = useLocalStorageState('ttt-history', [
+    Array(9).fill(null),
+  ]);
+  const pushToHistory = (stateArr) => setHistory([...history, stateArr]);
+  const restart = () => setHistory([history[0]]);
+  const undo = () => setHistory([...history.slice(0, -1)]);
+  const lastState = history[history.length - 1];
+
+  return (
+    <div className="game">
+      <Board squares={lastState} handleUpdate={pushToHistory} />
+      <button onClick={restart}>restart</button>
+      <button onClick={undo} disabled={history.length <= 1}>
+        undo
+      </button>
+    </div>
+  );
+}
+
+function Board({ squares, handleUpdate }) {
   const nextValue = getNextValue(squares);
   const winner = getWinner(squares);
   const status = getStatusMessage(winner, squares, nextValue);
 
   function updateSquare(squareIndex) {
-    // TODO Felder mit neuem Wert aktualisieren, sofern angebracht
-  }
-
-  function restart() {
-    // TODO Zustand des Spiels zurücksetzen
+    if (winner || squares[squareIndex]) return;
+    // setSquares(
+    //   squares.map((value, index) =>
+    //     index === squareIndex ? nextValue : value,
+    //   ),
+    // );
+    const squaresCopy = [...squares];
+    squaresCopy[squareIndex] = nextValue;
+    handleUpdate(squaresCopy);
   }
 
   return (
-    <div className="game">
+    <React.Fragment>
       <div className="status">{status}</div>
-
       <div className="squares">
         {squares.map((square, index) => (
           <button key={index} onClick={() => updateSquare(index)}>
@@ -34,24 +66,22 @@ export default function TicTacToe() {
           </button>
         ))}
       </div>
-
-      <button className="restart" onClick={restart}>
-        restart
-      </button>
-    </div>
+    </React.Fragment>
   );
 }
 
 // -- Helper functions ---
 
 function getNextValue(squares) {
-  // TODO durch Auswertung der Felder herausfinden, wer als nächstes am Zug ist
+  const xCount = squares.filter((r) => r === 'X').length;
+  const oCount = squares.filter((r) => r === 'O').length;
+  return xCount === oCount ? 'X' : 'O';
 }
 
 function getStatusMessage(winner, squares, nextPlayer) {
   if (winner) return `Gewinner: ${winner}`;
   if (squares.every(Boolean)) return 'Gleichstand';
-  return `Nächster Zug: ${nextPlayer}`;
+  return `Nächster: ${nextPlayer}`;
 }
 
 function getWinner(squares) {
