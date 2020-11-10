@@ -1,0 +1,27 @@
+.game {
+  margin: 20px;
+}
+.squares {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100px;
+  margin: 10px 0;
+}
+
+.squares > button {
+  flex: 1;
+  min-width: 33%;
+  height: 34px;
+  margin-right: -1px;
+  margin-top: -1px;
+  border: 1px solid #999;
+  background: #fff;
+  line-height: 34px;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.squares > button:focus {
+  outline: none;
+  background: #ddd;
+}
