@@ -1,9 +1,12 @@
 import React from 'react';
 // import Message from './Message';
-import Exchange from './Exchange';
+// import Exchange from './Exchange';
+import Pokedex from './Pokedex';
 
 function App() {
-  return <Exchange />;
+  return <Pokedex />;
+
+  // return <Exchange />;
 
   // const [counter, setCounter] = React.useState(0);
   // return (
