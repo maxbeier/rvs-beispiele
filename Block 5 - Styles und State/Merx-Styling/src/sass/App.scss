@@ -1,0 +1,60 @@
+@import 'variables';
+
+body {
+  color: $text-color;
+  line-height: 1.4;
+}
+
+a {
+  text-decoration: none;
+  color: $primary-color;
+}
+
+header,
+footer {
+  background-color: $lightGray;
+  padding: 1rem;
+}
+
+main {
+  padding: 1rem;
+}
+
+.container {
+  max-width: 60rem;
+  margin: 0 auto;
+}
+
+.header,
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header {
+  .title {
+    margin: 0;
+    line-height: 1;
+  }
+
+  nav > * + * {
+    margin-left: 1rem;
+  }
+}
+
+.spread {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+svg {
+  min-height: 1.5em;
+  min-width: 1.5em;
+}
+
+.clean {
+  border: 0;
+  background-color: transparent;
+}

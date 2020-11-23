@@ -1,0 +1,53 @@
+@import 'variables';
+
+body {
+  color: $text-color;
+  line-height: 1.4;
+}
+
+a {
+  text-decoration: none;
+  color: $primary-color;
+}
+
+.products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  grid-gap: 1rem;
+}
+
+.product {
+  display: flex;
+  flex-direction: column;
+  border: 2px solid $lightGray;
+  border-radius: 4px;
+
+  &--highlighted {
+    background-color: $lightGray;
+    border-color: $primary-color;
+  }
+
+  &__image {
+    width: 100%;
+  }
+
+  &__title {
+    margin: 0 0 0.5rem;
+    padding: 0 1rem;
+  }
+
+  &__body {
+    flex: 1;
+    padding: 0 1rem;
+  }
+
+  &__price {
+    padding: 1rem;
+    text-align: right;
+    font-weight: bold;
+
+    &--cheap {
+      color: red;
+    }
+  }
+}
