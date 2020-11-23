@@ -1,5 +1,6 @@
 import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+import axios from 'axios'; // https://bundlephobia.com/result?p=axios
 
 const STATES = {
   INIT: 'INIT',
@@ -9,7 +10,8 @@ const STATES = {
   RESOLVED: 'RESOLVED',
 };
 
-const toTitleCase = txt => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+const toTitleCase = (txt) =>
+  txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
 
 export default function Pokedex() {
   const [pokeId, setPokeId] = React.useState(null);
@@ -20,14 +22,36 @@ export default function Pokedex() {
       <PokeSearch value={pokeId} onChange={setPokeId} />
       <div className="btn-toolbar">
         <span className="btn-sm">e.g.</span>
-      <div className="btn-group mb-1">
-        <button className="btn btn-link btn-sm" type="button" onClick={() => setPokeId(25)}>Pikachu</button>
-        <button className="btn btn-link btn-sm" type="button" onClick={() => setPokeId(39)}>Jigglypuff</button>
-        <button className="btn btn-link btn-sm" type="button" onClick={() => setPokeId(150)}>Mewtwo</button>
-      </div>
+        <div className="btn-group mb-1">
+          <button
+            className="btn btn-link btn-sm"
+            type="button"
+            onClick={() => setPokeId(25)}
+          >
+            Pikachu
+          </button>
+          <button
+            className="btn btn-link btn-sm"
+            type="button"
+            onClick={() => setPokeId(39)}
+          >
+            Jigglypuff
+          </button>
+          <button
+            className="btn btn-link btn-sm"
+            type="button"
+            onClick={() => setPokeId(150)}
+          >
+            Mewtwo
+          </button>
+        </div>
       </div>
       {pokeId && (
-        <ErrorBoundary FallbackComponent={ErrorFallback} resetKeys={[pokeId]} onReset={reset}>
+        <ErrorBoundary
+          FallbackComponent={ErrorFallback}
+          resetKeys={[pokeId]}
+          onReset={reset}
+        >
           <PokeData pokeId={pokeId} />
         </ErrorBoundary>
       )}
@@ -71,14 +95,56 @@ function ErrorFallback({ error, resetErrorBoundary }) {
       </button>
       <h4 className="alert-heading">Error</h4>
       <p>{error.message}</p>
-      <button onClick={resetErrorBoundary} type="button" className="btn btn-danger">
+      <button
+        onClick={resetErrorBoundary}
+        type="button"
+        className="btn btn-danger"
+      >
         Reset
       </button>
     </div>
   );
 }
 
-function PokeData({ pokeId }) {
+// const randomTimeout = (data) =>
+//   new Promise((resolve) => setTimeout(resolve, Math.random() * 5000, data));
+
+// function usePokemon(pokeId) {
+//   const [state, setState] = React.useState({ status: STATES.INIT });
+
+//   React.useEffect(() => {
+//     if (!pokeId) return;
+
+//     const abortController = new AbortController();
+//     const { signal } = abortController;
+
+//     setState({ status: STATES.LOADING });
+
+//     console.log('loading data for', pokeId);
+
+//     fetch(`https://pokeapi.co/api/v2/pokemon/${pokeId}`, { signal })
+//       //.then(randomTimeout)
+//       .then((response) => {
+//         if (signal.aborted) throw null;
+//         if (response.ok) return response.json();
+//         else throw new Error('404 Pokemon not found');
+//       })
+//       .then((result) => {
+//         if (signal.aborted) throw null;
+//         setState({ status: STATES.RESOLVED, pokemon: result });
+//       })
+//       .catch((error) => {
+//         if (signal.aborted) return;
+//         setState({ status: STATES.REJECTED, error: error.message });
+//       });
+
+//     return () => abortController.abort();
+//   }, [pokeId]);
+
+//   return state;
+// }
+
+function usePokemon(pokeId) {
   const [state, setState] = React.useState({ status: STATES.INIT });
 
   React.useEffect(() => {
@@ -86,38 +152,52 @@ function PokeData({ pokeId }) {
 
     setState({ status: STATES.LOADING });
 
-    fetch(`https://pokeapi.co/api/v2/pokemon/${pokeId}`)
-      .then((response) => {
-        if (response.ok) return response.json();
-        else throw new Error('404 Pokemon not found');
+    const CancelToken = axios.CancelToken;
+    const source = CancelToken.source();
+
+    axios
+      .get(`https://pokeapi.co/api/v2/pokemon/${pokeId}`, {
+        cancelToken: source.token,
       })
       .then((result) => {
-        setState({ status: STATES.RESOLVED, pokemon: result });
+        setState({ status: STATES.RESOLVED, pokemon: result.data });
       })
       .catch((error) => {
+        if (axios.isCancel(error)) return;
         setState({ status: STATES.REJECTED, error: error.message });
       });
+
+    return () => source.cancel('request canceled');
   }, [pokeId]);
 
-  if (state.status === STATES.INIT) return null;
+  return state;
+}
 
-  if (state.status === STATES.LOADING)
+function PokeData({ pokeId }) {
+  const { status, error, pokemon } = usePokemon(pokeId);
+
+  if (status === STATES.INIT) return null;
+
+  if (status === STATES.LOADING)
     return (
       <div className="text-center mt-5 mb-5">
         <div className="spinner-grow text-secondary" />
       </div>
     );
 
-  if (state.status === STATES.REJECTED)
+  if (status === STATES.REJECTED)
     return (
       <div className="alert alert-danger" role="alert">
-        {state.error}
+        {error}
       </div>
     );
 
-  const { pokemon } = state;
-  const name = toTitleCase(pokemon.name).replace('-f', ' ♀').replace('-m', ' ♂');
-  const image = pokemon.sprites.other['official-artwork'].front_default || pokemon.sprites.front_default;
+  const name = toTitleCase(pokemon.name)
+    .replace('-f', ' ♀')
+    .replace('-m', ' ♂');
+  const image =
+    pokemon.sprites.other['official-artwork'].front_default ||
+    pokemon.sprites.front_default;
 
   return (
     <div className="card shadow-sm">
