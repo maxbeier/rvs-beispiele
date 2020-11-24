@@ -1,0 +1,5 @@
+export const ADD_FAVOURITE = 'ADD_FAVOURITE';
+export const REMOVE_FAVOURITE = 'REMOVE_FAVOURITE';
+export const EMPTY_FAVOURITE = 'EMPTY_FAVOURITE';
+export const LOGIN_USER = 'LOGIN_USER';
+export const LOGOUT_USER = 'LOGOUT_USER';

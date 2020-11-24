@@ -1,8 +1,7 @@
 import Grid from '@material-ui/core/Grid';
 import Product from './Product';
-import products from './products.json';
 
-const Products = () => {
+const Products = ({ products }) => {
   return (
     <Grid container spacing={4}>
       {products.map((product) => (

@@ -1,5 +1,12 @@
 import React from 'react';
-import { Switch, Route, NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import {
+  Switch,
+  Route,
+  NavLink,
+  Redirect,
+  Link as RouterLink,
+} from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
@@ -14,9 +21,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 
+import { LOGIN_USER, LOGOUT_USER } from './store/actions';
+import Imprint from './Imprint';
+import Favourites from './Favourites';
 import Products from './Products';
 import Product from './Product';
-// import products from './products.json';
+import products from './products.json';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -52,7 +62,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Album() {
+const mapStateToProps = (state) => ({
+  isLoggedIn: state.user.isLoggedIn,
+  favourites: state.favourites,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  login: () => dispatch({ type: LOGIN_USER }),
+  logout: () => dispatch({ type: LOGOUT_USER }),
+});
+
+function App({ isLoggedIn, login, logout, favourites }) {
   const classes = useStyles();
 
   return (
@@ -68,46 +88,46 @@ export default function Album() {
             noWrap
             className={classes.toolbarTitle}
           >
-            Merx
-          </Typography>
-
+            <Link component={RouterLink} color="inherit" to="/">
+              Merx
+            </Link>
+          </Typography>{' '}
+          {isLoggedIn && (
+            <IconButton component={RouterLink} to="/favourites" color="primary">
+              <Badge badgeContent={favourites.length} color="primary">
+                <FavoriteBorderOutlinedIcon color="primary" />
+              </Badge>
+            </IconButton>
+          )}
           <IconButton href="#" color="primary">
-            <Badge badgeContent={4} color="primary">
-              <FavoriteBorderOutlinedIcon color="primary" />
-            </Badge>
+            <ShoppingCartOutlinedIcon color="primary" />
           </IconButton>
-
-          <IconButton href="#" color="primary">
-            <Badge badgeContent={4} color="primary">
-              <ShoppingCartOutlinedIcon color="primary" />
-            </Badge>
-          </IconButton>
-
-          <NavLink
+          <Link
+            component={NavLink}
             exact
             to="/"
             activeClassName="activeClassName"
             activeStyle={{ color: 'red' }}
           >
             Home
-          </NavLink>
+          </Link>
           {' - '}
-          <NavLink
+          <Link
+            component={NavLink}
             exact
             to="/products"
             activeClassName="activeClassName"
             activeStyle={{ color: 'red' }}
           >
             Products
-          </NavLink>
-
+          </Link>
           <Button
-            href="#"
+            onClick={isLoggedIn ? logout : login}
             color="primary"
             variant="outlined"
             className={classes.link}
           >
-            Login
+            {isLoggedIn ? 'Logout' : 'Login'}
           </Button>
         </Toolbar>
       </AppBar>
@@ -115,8 +135,19 @@ export default function Album() {
       <main>
         <Container className={classes.cardGrid} maxWidth="md">
           <Switch>
-            <Route path="/products/:id" component={Product} />
-            <Route path="/" component={Products} />
+            <Route path="/imprint" component={Imprint} />
+            <Route
+              path="/favourites"
+              render={() =>
+                isLoggedIn ? (
+                  <Favourites products={products} favourites={favourites} />
+                ) : (
+                  <Redirect to="/" />
+                )
+              }
+            />
+            <Route path="/products/:id" render={() => <Product />} />
+            <Route path="/" render={() => <Products products={products} />} />
             <Route render={() => <span>404 Not Found Fehlerseite</span>} />
           </Switch>
         </Container>
@@ -132,7 +163,7 @@ export default function Album() {
           color="textSecondary"
           component="p"
         >
-          <Link color="inherit" href="/">
+          <Link component={RouterLink} color="inherit" to="/imprint">
             Imprint
           </Link>
           {' | '}
@@ -144,3 +175,5 @@ export default function Album() {
     </React.Fragment>
   );
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
