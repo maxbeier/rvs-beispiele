@@ -1,4 +1,5 @@
 import React from 'react';
+import { Switch, Route, NavLink } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
@@ -15,7 +16,7 @@ import Link from '@material-ui/core/Link';
 
 import Products from './Products';
 import Product from './Product';
-import products from './products.json';
+// import products from './products.json';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -82,6 +83,24 @@ export default function Album() {
             </Badge>
           </IconButton>
 
+          <NavLink
+            exact
+            to="/"
+            activeClassName="activeClassName"
+            activeStyle={{ color: 'red' }}
+          >
+            Home
+          </NavLink>
+          {' - '}
+          <NavLink
+            exact
+            to="/products"
+            activeClassName="activeClassName"
+            activeStyle={{ color: 'red' }}
+          >
+            Products
+          </NavLink>
+
           <Button
             href="#"
             color="primary"
@@ -95,7 +114,11 @@ export default function Album() {
 
       <main>
         <Container className={classes.cardGrid} maxWidth="md">
-          <Products products={products} />
+          <Switch>
+            <Route path="/products/:id" component={Product} />
+            <Route path="/" component={Products} />
+            <Route render={() => <span>404 Not Found Fehlerseite</span>} />
+          </Switch>
         </Container>
       </main>
 
