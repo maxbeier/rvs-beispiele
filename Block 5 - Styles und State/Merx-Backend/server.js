@@ -25,7 +25,7 @@ const generateReleated = (id = 0) =>
   [-3, -2, 0, 1].map((offset) => ((id + offset + products.length) % products.length) + 1 + '');
 
 // künstliche Verzögerung für alle Anfragen
-app.use((req, res, next) => setTimeout(next, 2000));
+app.use((req, res, next) => setTimeout(next, 1000));
 
 app.use((req, res, next) => {
   req.user = sessions[req.cookies.session];
