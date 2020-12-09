@@ -6,7 +6,6 @@ import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -18,13 +17,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { FAVOURITE_ADD, FAVOURITE_REMOVE } from './store/actions';
 import { selectIsFavourite, selectProductById } from './store/selectors';
 import { loadProduct } from './store/actions';
+import Product from './Product';
 
 const useStyles = makeStyles((theme) => ({
-  card: {
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-  },
   cardMedia: {
     paddingTop: '56.25%', // 16:9
     backgroundSize: 'contain',
@@ -39,7 +34,7 @@ const CardActionsSt = styled(CardActions)`
   padding-right: 1rem;
 `;
 
-const Product = ({ id }) => {
+const ProductDetails = ({ id }) => {
   const classes = useStyles();
 
   const { isLoggedIn } = useSelector((state) => state.user);
@@ -52,10 +47,11 @@ const Product = ({ id }) => {
   const toggleFavourite = isFavourite ? removeFavourite : addFavourite;
 
   React.useEffect(() => {
-    if (!product) dispatch(loadProduct(id));
-  }, [dispatch, id]);
+    if (!product || (!product?.bodyHtml && !product?.isLoading))
+      dispatch(loadProduct(id));
+  }, [product, dispatch, id]);
 
-  if (!product || product.isLoading)
+  if (!product)
     return (
       <Box textAlign="center" mt={2}>
         <CircularProgress />
@@ -63,7 +59,7 @@ const Product = ({ id }) => {
     );
 
   return (
-    <Card className={classes.card}>
+    <div>
       <RouteLink to={`/products/${id}`}>
         <CardMedia
           className={classes.cardMedia}
@@ -71,14 +67,6 @@ const Product = ({ id }) => {
           title={product.title}
         />
       </RouteLink>
-      <CardContent className={classes.cardContent}>
-        <Link component={RouteLink} to={`/products/${id}`}>
-          <Typography gutterBottom variant="h5" component="h2">
-            {product.title}
-          </Typography>
-        </Link>
-        <Typography>{product.excerpt}</Typography>
-      </CardContent>
       <CardActionsSt>
         {isLoggedIn ? (
           <IconButton onClick={toggleFavourite} color="primary">
@@ -93,8 +81,36 @@ const Product = ({ id }) => {
         )}
         <Typography>{product.price}</Typography>
       </CardActionsSt>
-    </Card>
+      <CardContent className={classes.cardContent}>
+        <Link component={RouteLink} to={`/products/${id}`}>
+          <Typography gutterBottom variant="h5" component="h2">
+            {product.title}
+          </Typography>
+        </Link>
+        <Typography
+          dangerouslySetInnerHTML={{
+            __html: product.bodyHtml || product.excerpt,
+          }}
+        />
+      </CardContent>
+
+      {product.isLoading && (
+        <Box textAlign="center" mt={2}>
+          <CircularProgress />
+        </Box>
+      )}
+
+      {product.related && (
+        <Grid container spacing={4}>
+          {product.related.map((id) => (
+            <Grid item key={id} xs={12} sm={6} md={4}>
+              <Product id={id} />
+            </Grid>
+          ))}
+        </Grid>
+      )}
+    </div>
   );
 };
 
-export default Product;
+export default ProductDetails;

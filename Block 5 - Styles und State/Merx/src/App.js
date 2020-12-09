@@ -27,6 +27,7 @@ import Login from './Login';
 import Favourites from './Favourites';
 import Products from './Products';
 import Product from './Product';
+import ProductDetails from './ProductDetails';
 import PrivateRoute from './PrivateRoute';
 
 const useStyles = makeStyles((theme) => ({
@@ -133,15 +134,9 @@ function App() {
             <PrivateRoute path="/favourites" component={Favourites} />
             <Route
               path="/products/:id"
-              render={({ match }) => (
-                <Product
-                  {...products.find(
-                    (product) => product.id === match.params.id,
-                  )}
-                />
-              )}
+              render={({ match }) => <ProductDetails id={match.params.id} />}
             />
-            <Route path="/" render={() => <Products products={products} />} />
+            <Route path="/" component={Products} />
             <Route render={() => <span>404 Not Found Fehlerseite</span>} />
           </Switch>
         </Container>

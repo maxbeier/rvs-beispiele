@@ -1,4 +1,4 @@
-import { USER_LOADING, USER_ERROR, USER_SUCCESS, USER_LOGOUT } from './actions';
+import { USER_LOAD, USER_ERROR, USER_LOADED, USER_LOGOUT } from './actions';
 
 const initialState = {
   isLoading: false,
@@ -8,13 +8,13 @@ const initialState = {
 
 const userReducer = (state = initialState, action) => {
   switch (action.type) {
-    case USER_LOADING: {
+    case USER_LOAD: {
       return { isLoggedIn: false, isLoading: true };
     }
     case USER_ERROR: {
       return { isLoggedIn: false, isLoading: false, error: action.payload };
     }
-    case USER_SUCCESS: {
+    case USER_LOADED: {
       return { isLoggedIn: true, isLoading: false, ...action.payload };
     }
     case USER_LOGOUT: {

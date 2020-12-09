@@ -37,8 +37,6 @@ export default function Login() {
     dispatch(login(credentials));
   };
 
-  console.log('Login.js', { isLoggedIn, isLoading, error });
-
   if (isLoggedIn) return <Redirect to="/" />;
 
   return (
