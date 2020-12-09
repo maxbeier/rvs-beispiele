@@ -1,7 +1,12 @@
 import Grid from '@material-ui/core/Grid';
 import Product from './Product';
 
-const Products = ({ products }) => {
+const Products = () => {
+  // TODO get products from store
+  // wenn keine vorhanden (und nicht gerade geladen werden), dispatche load action
+  // isLoading -> zeige spinner
+  // error -> zeige fehler
+  // else -> zeige produkte
   return (
     <Grid container spacing={4}>
       {products.map((product) => (

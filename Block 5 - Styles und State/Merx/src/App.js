@@ -23,9 +23,11 @@ import Link from '@material-ui/core/Link';
 
 import { USER_LOGIN, USER_LOGOUT } from './store/actions';
 import Imprint from './Imprint';
+import Login from './Login';
 import Favourites from './Favourites';
 import Products from './Products';
 import Product from './Product';
+import PrivateRoute from './PrivateRoute';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -71,8 +73,7 @@ function App() {
   }));
 
   const dispatch = useDispatch();
-  const toggleLogin = () =>
-    dispatch({ type: isLoggedIn ? USER_LOGOUT : USER_LOGIN });
+  const logout = () => dispatch({ type: USER_LOGOUT });
 
   return (
     <React.Fragment>
@@ -101,14 +102,26 @@ function App() {
           <IconButton href="#" color="primary">
             <ShoppingCartOutlinedIcon color="primary" />
           </IconButton>
-          <Button
-            onClick={toggleLogin}
-            color="primary"
-            variant="outlined"
-            className={classes.link}
-          >
-            {isLoggedIn ? 'Logout' : 'Login'}
-          </Button>
+          {isLoggedIn ? (
+            <Button
+              onClick={logout}
+              color="primary"
+              variant="outlined"
+              className={classes.link}
+            >
+              Logout
+            </Button>
+          ) : (
+            <Button
+              component={RouterLink}
+              to="/login"
+              color="primary"
+              variant="outlined"
+              className={classes.link}
+            >
+              Login
+            </Button>
+          )}
         </Toolbar>
       </AppBar>
 
@@ -116,10 +129,8 @@ function App() {
         <Container className={classes.cardGrid} maxWidth="md">
           <Switch>
             <Route path="/imprint" component={Imprint} />
-            <Route
-              path="/favourites"
-              render={() => (isLoggedIn ? <Favourites /> : <Redirect to="/" />)}
-            />
+            <Route path="/login" component={Login} />
+            <PrivateRoute path="/favourites" component={Favourites} />
             <Route
               path="/products/:id"
               render={({ match }) => (

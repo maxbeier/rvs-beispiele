@@ -1,20 +1,20 @@
 import { PRODUCTS_ADD, PRODUCTS_REMOVE } from './actions';
-import products from '../products.json';
 
-const initialState = products;
+const initialState = [];
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    // case FAVOURITE_ADD: {
-    //   return [...state, action.id];
+    // TOOD
+    // case PRODUCTS_LOADING: {
+    //   return ???
     // }
 
-    // case FAVOURITE_REMOVE: {
-    //   return state.filter((id) => id !== action.id);
+    // case PRODUCTS_SUCCESS: {
+    //   return ???
     // }
 
-    // case FAVOURITE_REMOVE_ALL: {
-    //   return [];
+    // case PRODUCTS_ERROR: {
+    //   return ???
     // }
 
     default: {
