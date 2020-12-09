@@ -101,25 +101,6 @@ function App() {
           <IconButton href="#" color="primary">
             <ShoppingCartOutlinedIcon color="primary" />
           </IconButton>
-          <Link
-            component={NavLink}
-            exact
-            to="/"
-            activeClassName="activeClassName"
-            activeStyle={{ color: 'red' }}
-          >
-            Home
-          </Link>
-          {' - '}
-          <Link
-            component={NavLink}
-            exact
-            to="/products"
-            activeClassName="activeClassName"
-            activeStyle={{ color: 'red' }}
-          >
-            Products
-          </Link>
           <Button
             onClick={toggleLogin}
             color="primary"
