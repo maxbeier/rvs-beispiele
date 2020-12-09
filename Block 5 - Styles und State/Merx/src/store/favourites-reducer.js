@@ -4,9 +4,9 @@ import {
   FAVOURITE_REMOVE_ALL,
 } from './actions';
 
-const initialFavouritesState = ['1', '2', '3'];
+const initialState = [];
 
-const favouritesReducer = (state = initialFavouritesState, action) => {
+const reducer = (state = initialState, action) => {
   switch (action.type) {
     case FAVOURITE_ADD: {
       return [...state, action.id];
@@ -26,4 +26,4 @@ const favouritesReducer = (state = initialFavouritesState, action) => {
   }
 };
 
-export default favouritesReducer;
+export default reducer;

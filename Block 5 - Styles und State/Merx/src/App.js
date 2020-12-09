@@ -26,7 +26,6 @@ import Imprint from './Imprint';
 import Favourites from './Favourites';
 import Products from './Products';
 import Product from './Product';
-import products from './products.json';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -65,9 +64,10 @@ const useStyles = makeStyles((theme) => ({
 function App() {
   const classes = useStyles();
 
-  const { isLoggedIn, favourites } = useSelector((state) => ({
+  const { isLoggedIn, favourites, products } = useSelector((state) => ({
     isLoggedIn: state.user.isLoggedIn,
     favourites: state.favourites,
+    products: state.products,
   }));
 
   const dispatch = useDispatch();
@@ -137,15 +137,18 @@ function App() {
             <Route path="/imprint" component={Imprint} />
             <Route
               path="/favourites"
-              render={() =>
-                isLoggedIn ? (
-                  <Favourites products={products} favourites={favourites} />
-                ) : (
-                  <Redirect to="/" />
-                )
-              }
+              render={() => (isLoggedIn ? <Favourites /> : <Redirect to="/" />)}
             />
-            <Route path="/products/:id" render={() => <Product />} />
+            <Route
+              path="/products/:id"
+              render={({ match }) => (
+                <Product
+                  {...products.find(
+                    (product) => product.id === match.params.id,
+                  )}
+                />
+              )}
+            />
             <Route path="/" render={() => <Products products={products} />} />
             <Route render={() => <span>404 Not Found Fehlerseite</span>} />
           </Switch>

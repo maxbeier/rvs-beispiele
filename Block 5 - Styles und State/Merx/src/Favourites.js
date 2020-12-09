@@ -3,18 +3,17 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Product from './Product';
 import { FAVOURITE_REMOVE_ALL } from './store/actions';
+import { selectFavouriteProducts } from './store/selectors';
 
-const Favourites = ({ favourites, products }) => {
+const Favourites = () => {
   const dispatch = useDispatch();
   const emptyFavourite = () => dispatch({ type: FAVOURITE_REMOVE_ALL });
 
-  if (!favourites.length) {
+  const filteredProducts = useSelector(selectFavouriteProducts);
+
+  if (!filteredProducts.length) {
     return <h1>Aktuell keine Favoriten vorhanden</h1>;
   }
-
-  const filteredProducts = products.filter((product) =>
-    favourites.includes(product.id),
-  );
 
   return (
     <Grid container spacing={4}>

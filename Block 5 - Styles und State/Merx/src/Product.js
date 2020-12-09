@@ -1,7 +1,7 @@
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link as RouteLink } from 'react-router-dom';
 import styled from 'styled-components';
 import Link from '@material-ui/core/Link';
-import { Link as RouteLink, useParams } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -12,7 +12,7 @@ import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutline
 import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
 import { makeStyles } from '@material-ui/core/styles';
 import { FAVOURITE_ADD, FAVOURITE_REMOVE } from './store/actions';
-import products from './products.json';
+import { selectIsFavourite } from './store/selectors';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -34,30 +34,16 @@ const CardActionsSt = styled(CardActions)`
   padding-right: 1rem;
 `;
 
-const mapStateToProps = (state) => ({
-  isLoggedIn: state.user.isLoggedIn,
-  favourites: state.favourites,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  addFavourite: (id) => dispatch({ type: FAVOURITE_ADD, id }),
-  removeFavourite: (id) => dispatch({ type: FAVOURITE_REMOVE, id }),
-});
-
-const Product = (props = {}) => {
+const Product = (product) => {
   const classes = useStyles();
-  const params = useParams();
+  const id = product.id;
+  const { isLoggedIn } = useSelector((state) => state.user);
+  const isFavourite = useSelector(selectIsFavourite(id));
 
-  const id = props.id || params.id;
-  const product = products.find((product) => product.id === id);
-  const { isLoggedIn, favourites, addFavourite, removeFavourite } = props;
-
-  const isFavourite = favourites.some((id) => id === product.id);
-
-  const toggleFavourite = (product) => {
-    if (isFavourite) removeFavourite(product.id);
-    else addFavourite(product.id);
-  };
+  const dispatch = useDispatch();
+  const addFavourite = () => dispatch({ type: FAVOURITE_ADD, id });
+  const removeFavourite = () => dispatch({ type: FAVOURITE_REMOVE, id });
+  const toggleFavourite = isFavourite ? removeFavourite : addFavourite;
 
   return (
     <Card className={classes.card}>
@@ -78,7 +64,7 @@ const Product = (props = {}) => {
       </CardContent>
       <CardActionsSt>
         {isLoggedIn ? (
-          <IconButton onClick={() => toggleFavourite(product)} color="primary">
+          <IconButton onClick={toggleFavourite} color="primary">
             {isFavourite ? (
               <FavoriteOutlinedIcon color="primary" />
             ) : (
@@ -94,4 +80,4 @@ const Product = (props = {}) => {
   );
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Product);
+export default Product;
