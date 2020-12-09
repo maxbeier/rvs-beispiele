@@ -1,5 +1,5 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
   Switch,
   Route,
@@ -21,7 +21,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 
-import { LOGIN_USER, LOGOUT_USER } from './store/actions';
+import { USER_LOGIN, USER_LOGOUT } from './store/actions';
 import Imprint from './Imprint';
 import Favourites from './Favourites';
 import Products from './Products';
@@ -62,18 +62,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const mapStateToProps = (state) => ({
-  isLoggedIn: state.user.isLoggedIn,
-  favourites: state.favourites,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  login: () => dispatch({ type: LOGIN_USER }),
-  logout: () => dispatch({ type: LOGOUT_USER }),
-});
-
-function App({ isLoggedIn, login, logout, favourites }) {
+function App() {
   const classes = useStyles();
+
+  const { isLoggedIn, favourites } = useSelector((state) => ({
+    isLoggedIn: state.user.isLoggedIn,
+    favourites: state.favourites,
+  }));
+
+  const dispatch = useDispatch();
+  const toggleLogin = () =>
+    dispatch({ type: isLoggedIn ? USER_LOGOUT : USER_LOGIN });
 
   return (
     <React.Fragment>
@@ -122,7 +121,7 @@ function App({ isLoggedIn, login, logout, favourites }) {
             Products
           </Link>
           <Button
-            onClick={isLoggedIn ? logout : login}
+            onClick={toggleLogin}
             color="primary"
             variant="outlined"
             className={classes.link}
@@ -176,4 +175,4 @@ function App({ isLoggedIn, login, logout, favourites }) {
   );
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

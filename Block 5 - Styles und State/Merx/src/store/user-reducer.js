@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOGOUT_USER } from './actions';
+import { USER_LOGIN, USER_LOGOUT } from './actions';
 
 const initialUserState = {
   // isLoggedIn: false,
@@ -7,10 +7,10 @@ const initialUserState = {
 
 const userReducer = (state = initialUserState, action) => {
   switch (action.type) {
-    case LOGIN_USER: {
+    case USER_LOGIN: {
       return { isLoggedIn: true };
     }
-    case LOGOUT_USER: {
+    case USER_LOGOUT: {
       return { isLoggedIn: false };
     }
 

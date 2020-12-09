@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutlined';
 import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
 import { makeStyles } from '@material-ui/core/styles';
-import { ADD_FAVOURITE, REMOVE_FAVOURITE } from './store/actions';
+import { FAVOURITE_ADD, FAVOURITE_REMOVE } from './store/actions';
 import products from './products.json';
 
 const useStyles = makeStyles((theme) => ({
@@ -40,8 +40,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  addFavourite: (id) => dispatch({ type: ADD_FAVOURITE, id }),
-  removeFavourite: (id) => dispatch({ type: REMOVE_FAVOURITE, id }),
+  addFavourite: (id) => dispatch({ type: FAVOURITE_ADD, id }),
+  removeFavourite: (id) => dispatch({ type: FAVOURITE_REMOVE, id }),
 });
 
 const Product = (props = {}) => {
