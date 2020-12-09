@@ -1,4 +1,6 @@
 import React from 'react';
+import { QueryCache, ReactQueryCacheProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query-devtools';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import ReactDOM from 'react-dom';
@@ -13,15 +15,35 @@ import 'fontsource-roboto/700.css';
 
 window.store = store;
 
+const fetchFromServer = (path) =>
+  fetch(`http://localhost:3001/${path}`)
+    .then((response) => response.json())
+    .then((json) => {
+      if (json.success) return json.data;
+      else throw new Error(json.error);
+    });
+
+const queryCache = new QueryCache({
+  defaultConfig: {
+    queries: {
+      staleTime: 5000,
+      queryFn: fetchFromServer,
+    },
+  },
+});
+
 ReactDOM.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <PersistGate persistor={persistor}>
-        <Router>
-          <App />
-        </Router>
-      </PersistGate>
-    </Provider>
+    <ReactQueryCacheProvider queryCache={queryCache}>
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <Router>
+            <App />
+            <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
+          </Router>
+        </PersistGate>
+      </Provider>
+    </ReactQueryCacheProvider>
   </React.StrictMode>,
   document.getElementById('root'),
 );

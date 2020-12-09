@@ -1,4 +1,5 @@
 import React from 'react';
+import { useQuery } from 'react-query';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link as RouteLink } from 'react-router-dom';
 import styled from 'styled-components';
@@ -39,24 +40,28 @@ const ProductDetails = ({ id }) => {
 
   const { isLoggedIn } = useSelector((state) => state.user);
   const isFavourite = useSelector(selectIsFavourite(id));
-  const product = useSelector(selectProductById(id));
 
   const dispatch = useDispatch();
   const addFavourite = () => dispatch({ type: FAVOURITE_ADD, id });
   const removeFavourite = () => dispatch({ type: FAVOURITE_REMOVE, id });
   const toggleFavourite = isFavourite ? removeFavourite : addFavourite;
 
-  React.useEffect(() => {
-    if (!product || (!product?.bodyHtml && !product?.isLoading))
-      dispatch(loadProduct(id));
-  }, [product, dispatch, id]);
+  const { isLoading, isFetching, error, data: product, refetch } = useQuery(
+    `products/${id}`,
+  );
 
-  if (!product)
+  React.useEffect(() => {
+    if (!product?.bodyHtml) refetch();
+  }, [product?.bodyHtml, refetch]);
+
+  if (isLoading)
     return (
       <Box textAlign="center" mt={2}>
         <CircularProgress />
       </Box>
     );
+
+  if (error) return <h1>Error: {error.message}</h1>;
 
   return (
     <div>
@@ -94,7 +99,7 @@ const ProductDetails = ({ id }) => {
         />
       </CardContent>
 
-      {product.isLoading && (
+      {isFetching && (
         <Box textAlign="center" mt={2}>
           <CircularProgress />
         </Box>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useQuery } from 'react-query';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link as RouteLink } from 'react-router-dom';
 import styled from 'styled-components';
@@ -44,23 +45,21 @@ const Product = ({ id }) => {
 
   const { isLoggedIn } = useSelector((state) => state.user);
   const isFavourite = useSelector(selectIsFavourite(id));
-  const product = useSelector(selectProductById(id));
-
   const dispatch = useDispatch();
   const addFavourite = () => dispatch({ type: FAVOURITE_ADD, id });
   const removeFavourite = () => dispatch({ type: FAVOURITE_REMOVE, id });
   const toggleFavourite = isFavourite ? removeFavourite : addFavourite;
 
-  React.useEffect(() => {
-    if (!product) dispatch(loadProduct(id));
-  }, [dispatch, id]);
+  const { isLoading, error, data: product } = useQuery(`products/${id}`);
 
-  if (!product || product.isLoading)
+  if (!product || isLoading)
     return (
       <Box textAlign="center" mt={2}>
         <CircularProgress />
       </Box>
     );
+
+  if (error) return <h1>Error: {error.message}</h1>;
 
   return (
     <Card className={classes.card}>
