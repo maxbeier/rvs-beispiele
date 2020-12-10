@@ -1,0 +1,20 @@
+{
+  "short_name": "Supero",
+  "name": "Supero – Book a Superhero",
+  "icons": [
+    {
+      "src": "favicon.ico",
+      "sizes": "192x192",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/images/icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#0071de",
+  "background_color": "#ffffff"
+}
