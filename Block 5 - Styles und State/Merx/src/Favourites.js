@@ -1,15 +1,12 @@
-import { useSelector, useDispatch } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Product from './Product';
-import { FAVOURITE_REMOVE_ALL } from './store/actions';
+import { useFavs } from './FavouritesContext';
 
 const Favourites = () => {
-  const dispatch = useDispatch();
-  const emptyFavourite = () => dispatch({ type: FAVOURITE_REMOVE_ALL });
-  const favIds = useSelector((state) => state.favourites);
+  const { favourites, removeAll } = useFavs();
 
-  if (!favIds.length) {
+  if (!favourites.length) {
     return <h1>Aktuell keine Favoriten vorhanden</h1>;
   }
 
@@ -17,12 +14,12 @@ const Favourites = () => {
     <>
       <h1>
         Favourites{' '}
-        <Button onClick={emptyFavourite} color="primary" variant="outlined">
+        <Button onClick={removeAll} color="primary" variant="outlined">
           Lösche alle Favoriten
         </Button>
       </h1>
       <Grid container spacing={4}>
-        {favIds.map((id) => (
+        {favourites.map((id) => (
           <Grid item key={id} xs={12} sm={6} md={4}>
             <Product id={id} />
           </Grid>

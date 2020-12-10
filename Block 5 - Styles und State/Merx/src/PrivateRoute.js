@@ -1,9 +1,9 @@
-import { useSelector } from 'react-redux';
 import { Route } from 'react-router-dom';
 import Login from './Login';
+import { useUser } from './UserContext';
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const { isLoggedIn } = useSelector((state) => state.user);
+  const { isLoggedIn } = useUser();
   return (
     <Route
       {...rest}

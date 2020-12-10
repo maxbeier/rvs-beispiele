@@ -1,19 +1,17 @@
 import React from 'react';
 import { QueryCache, ReactQueryCacheProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query-devtools';
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
+
 import App from './App';
-import { store, persistor } from './store/store';
+import { FavouritesProvider } from './FavouritesContext';
+import { UserProvider } from './UserContext';
 
 import 'fontsource-roboto/300.css';
 import 'fontsource-roboto/400.css';
 import 'fontsource-roboto/500.css';
 import 'fontsource-roboto/700.css';
-
-window.store = store;
 
 const fetchFromServer = (path) =>
   fetch(`http://localhost:3001/${path}`)
@@ -35,14 +33,14 @@ const queryCache = new QueryCache({
 ReactDOM.render(
   <React.StrictMode>
     <ReactQueryCacheProvider queryCache={queryCache}>
-      <Provider store={store}>
-        <PersistGate persistor={persistor}>
+      <UserProvider>
+        <FavouritesProvider>
           <Router>
             <App />
             <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
           </Router>
-        </PersistGate>
-      </Provider>
+        </FavouritesProvider>
+      </UserProvider>
     </ReactQueryCacheProvider>
   </React.StrictMode>,
   document.getElementById('root'),

@@ -1,12 +1,5 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import {
-  Switch,
-  Route,
-  NavLink,
-  Redirect,
-  Link as RouterLink,
-} from 'react-router-dom';
+import { Switch, Route, Link as RouterLink } from 'react-router-dom';
 import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Badge from '@material-ui/core/Badge';
@@ -21,14 +14,14 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
 
-import { USER_LOGIN, USER_LOGOUT } from './store/actions';
 import Imprint from './Imprint';
 import Login from './Login';
 import Favourites from './Favourites';
 import Products from './Products';
-import Product from './Product';
 import ProductDetails from './ProductDetails';
 import PrivateRoute from './PrivateRoute';
+import { useFavs } from './FavouritesContext';
+import { useUser } from './UserContext';
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -66,15 +59,8 @@ const useStyles = makeStyles((theme) => ({
 
 function App() {
   const classes = useStyles();
-
-  const { isLoggedIn, favourites, products } = useSelector((state) => ({
-    isLoggedIn: state.user.isLoggedIn,
-    favourites: state.favourites,
-    products: state.products,
-  }));
-
-  const dispatch = useDispatch();
-  const logout = () => dispatch({ type: USER_LOGOUT });
+  const { favourites } = useFavs();
+  const { isLoggedIn, logout } = useUser();
 
   return (
     <React.Fragment>

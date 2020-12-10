@@ -1,10 +1,8 @@
 import React from 'react';
 import { useQuery } from 'react-query';
-import { useSelector, useDispatch } from 'react-redux';
 import { Link as RouteLink } from 'react-router-dom';
 import styled from 'styled-components';
 import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Card from '@material-ui/core/Card';
@@ -16,9 +14,8 @@ import Typography from '@material-ui/core/Typography';
 import FavoriteBorderOutlinedIcon from '@material-ui/icons/FavoriteBorderOutlined';
 import FavoriteOutlinedIcon from '@material-ui/icons/FavoriteOutlined';
 import { makeStyles } from '@material-ui/core/styles';
-import { FAVOURITE_ADD, FAVOURITE_REMOVE } from './store/actions';
-import { selectIsFavourite, selectProductById } from './store/selectors';
-import { loadProduct } from './store/actions';
+import { useFavs } from './FavouritesContext';
+import { useUser } from './UserContext';
 
 const useStyles = makeStyles((theme) => ({
   card: {
@@ -42,14 +39,8 @@ const CardActionsSt = styled(CardActions)`
 
 const Product = ({ id }) => {
   const classes = useStyles();
-
-  const { isLoggedIn } = useSelector((state) => state.user);
-  const isFavourite = useSelector(selectIsFavourite(id));
-  const dispatch = useDispatch();
-  const addFavourite = () => dispatch({ type: FAVOURITE_ADD, id });
-  const removeFavourite = () => dispatch({ type: FAVOURITE_REMOVE, id });
-  const toggleFavourite = isFavourite ? removeFavourite : addFavourite;
-
+  const { isLoggedIn } = useUser();
+  const { toggleFavourite, isFavourite } = useFavs();
   const { isLoading, error, data: product } = useQuery(`products/${id}`);
 
   if (!product || isLoading)
@@ -80,8 +71,8 @@ const Product = ({ id }) => {
       </CardContent>
       <CardActionsSt>
         {isLoggedIn ? (
-          <IconButton onClick={toggleFavourite} color="primary">
-            {isFavourite ? (
+          <IconButton onClick={() => toggleFavourite(id)} color="primary">
+            {isFavourite(id) ? (
               <FavoriteOutlinedIcon color="primary" />
             ) : (
               <FavoriteBorderOutlinedIcon color="primary" />

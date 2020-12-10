@@ -1,5 +1,4 @@
 import React from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -8,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
-import { login } from './store/actions';
+import { useUser } from './UserContext';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -28,13 +27,12 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Login() {
   const classes = useStyles();
-  const { isLoggedIn, isLoading, error } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
+  const { isLoggedIn, isLoading, error, login } = useUser();
 
   const onSubmit = (event) => {
     event.preventDefault();
     const credentials = Object.fromEntries(new FormData(event.target));
-    dispatch(login(credentials));
+    login(credentials);
   };
 
   if (isLoggedIn) return <Redirect to="/" />;
