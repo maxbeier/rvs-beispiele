@@ -3,7 +3,7 @@ import { useQuery, useQueryCache } from 'react-query';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Product from './Product';
+import ConnectedProduct from './ConnectedProduct';
 
 const Products = () => {
   const queryCache = useQueryCache();
@@ -32,7 +32,7 @@ const Products = () => {
     <Grid container spacing={4}>
       {data.map((product) => (
         <Grid item key={product.id} xs={12} sm={6} md={4}>
-          <Product id={product.id} />
+          <ConnectedProduct id={product.id} />
         </Grid>
       ))}
     </Grid>

@@ -1,6 +1,6 @@
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import Product from './Product';
+import ConnectedProduct from './ConnectedProduct';
 import { useFavs } from './FavouritesContext';
 
 const Favourites = () => {
@@ -21,7 +21,7 @@ const Favourites = () => {
       <Grid container spacing={4}>
         {favourites.map((id) => (
           <Grid item key={id} xs={12} sm={6} md={4}>
-            <Product id={id} />
+            <ConnectedProduct id={id} />
           </Grid>
         ))}
       </Grid>
