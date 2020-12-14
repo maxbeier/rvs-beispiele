@@ -30,7 +30,7 @@ Beispiel-Code aus der RVS-Webschulung
 - Todo-App
 - WiFi-Sheet
 
-## Block 4
+## Block 4 – React
 
 - React-Basics
 - Kennzeichen-App
@@ -38,7 +38,8 @@ Beispiel-Code aus der RVS-Webschulung
 - Tic-Tac-Toe
 - Splendr React
 
-## Block 5
+## Block 5 – Styling und State Management
 
-- Merx (Sass / CSS Modules / Styled Components / Styled System / Material UI, Redux / react-query + Context)
+- Merx (Sass / CSS Modules / Styled Components / Styled System / Material UI)
+- Merx (Redux / react-query + Context)
 - Supero (React Context und Reducer)
